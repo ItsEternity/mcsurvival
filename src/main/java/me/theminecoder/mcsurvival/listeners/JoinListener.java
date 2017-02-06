@@ -51,16 +51,30 @@ public class JoinListener implements Listener {
         }
 
         PlayerManager.getPlayerMap().put(event.getUniqueId(), player);
-        System.out.println("PlayerManager.getPlayerMap() = " + PlayerManager.getPlayerMap());
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(null);
-      
+
         Player bukkitPlayer = event.getPlayer();
         SurvivalPlayer player = PlayerManager.getPlayer(bukkitPlayer);
-      
+
+        if (player == null) { // Fix for auto reconnect
+            AsyncPlayerPreLoginEvent fakeEvent = new AsyncPlayerPreLoginEvent(
+                    bukkitPlayer.getName(),
+                    bukkitPlayer.getAddress().getAddress(),
+                    bukkitPlayer.getUniqueId()
+            );
+            this.onAsyncPlayerPreLogin(fakeEvent);
+            if (fakeEvent.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+                bukkitPlayer.kickPlayer(fakeEvent.getKickMessage());
+                return;
+            } else {
+                player = PlayerManager.getPlayer(bukkitPlayer);
+            }
+        }
+
         Stream.of(
                 ChatColor.YELLOW + "Welcome to theminecoder's survival server!",
                 "",
@@ -74,7 +88,7 @@ public class JoinListener implements Listener {
             bukkitPlayer.getInventory().addItem(new ItemStack(Material.STONE_PICKAXE));
             bukkitPlayer.getInventory().addItem(new ItemStack(Material.STONE_AXE));
             bukkitPlayer.getInventory().addItem(new ItemStack(Material.APPLE, 5));
-          
+
         }
     }
 
