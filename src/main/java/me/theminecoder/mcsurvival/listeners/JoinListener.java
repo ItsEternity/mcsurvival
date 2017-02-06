@@ -97,11 +97,10 @@ public class JoinListener implements Listener {
         event.setQuitMessage(null);
 
         SurvivalPlayer player = PlayerManager.getPlayerMap().remove(event.getPlayer().getUniqueId());
-        try {
-            Survival.getInstance().getLogger().info("Quit debug: " + Survival.getInstance().getGson().toJson(player));
+        try (FileWriter writer = new FileWriter(new File(Survival.getInstance().getDataFolder(), event.getPlayer().getUniqueId() + ".json"))) {
             Survival.getInstance().getGson().toJson(
                     player,
-                    new FileWriter(new File(Survival.getInstance().getDataFolder(), event.getPlayer().getUniqueId() + ".json"))
+                    writer
             );
         } catch (IOException e) {
             Survival.getInstance().getLogger().severe("Could not save data of user " + player);
