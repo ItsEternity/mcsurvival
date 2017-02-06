@@ -51,6 +51,7 @@ public class JoinListener implements Listener {
         }
 
         PlayerManager.getPlayerMap().put(event.getUniqueId(), player);
+        System.out.println("PlayerManager.getPlayerMap() = " + PlayerManager.getPlayerMap());
     }
 
     @EventHandler
