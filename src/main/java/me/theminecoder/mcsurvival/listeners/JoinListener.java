@@ -98,6 +98,7 @@ public class JoinListener implements Listener {
 
         SurvivalPlayer player = PlayerManager.getPlayerMap().remove(event.getPlayer().getUniqueId());
         try {
+            Survival.getInstance().getLogger().info("Quit debug: " + Survival.getInstance().getGson().toJson(player));
             Survival.getInstance().getGson().toJson(
                     player,
                     new FileWriter(new File(Survival.getInstance().getDataFolder(), event.getPlayer().getUniqueId() + ".json"))
