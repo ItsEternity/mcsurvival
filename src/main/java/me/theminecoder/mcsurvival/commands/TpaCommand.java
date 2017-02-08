@@ -21,7 +21,7 @@ public class TpaCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if (!(sender instanceof Player)) {
-            return false;
+            return true;
         }
 
         Player bukkitPlayer = (Player) sender;
@@ -34,21 +34,20 @@ public class TpaCommand implements CommandExecutor {
 
         if (bukkitTarget == null) {
             bukkitPlayer.sendMessage(ChatColor.RED + args[0] + " is not online!");
-            return false;
-
-        } else {
-
-            PlayerManager.getTeleportCache().put(bukkitTarget.getUniqueId(), bukkitPlayer.getUniqueId());
-
-            Stream.of(
-                    ChatColor.RED + bukkitPlayer.getName() + ChatColor.YELLOW + " has requested to teleport to you!",
-                    ChatColor.YELLOW + "Use " + ChatColor.RED + "/tpaccept" + ChatColor.YELLOW + " to accept the request",
-                    ChatColor.YELLOW + "Use " + ChatColor.RED + "/tpdeny" + ChatColor.YELLOW + " to accept the request",
-                    ChatColor.YELLOW + "This request will expire in " + ChatColor.RED + "120 seconds!"
-
-            ).forEach(bukkitTarget::sendMessage);
-            bukkitPlayer.sendMessage(ChatColor.YELLOW + "Teleport request sent to " + ChatColor.RED + bukkitTarget.getName());
             return true;
+
         }
+
+        PlayerManager.getTeleportCache().put(bukkitTarget.getUniqueId(), bukkitPlayer.getUniqueId());
+
+        Stream.of(
+                ChatColor.YELLOW + bukkitPlayer.getName()  + " has requested to teleport to you!",
+                ChatColor.YELLOW + "Use " + ChatColor.AQUA + "/tpaccept" + ChatColor.YELLOW + " to accept the request",
+                ChatColor.YELLOW + "Use " + ChatColor.AQUA + "/tpdeny" + ChatColor.YELLOW + " to accept the request",
+                ChatColor.YELLOW + "This request will expire in  120 seconds!"
+
+        ).forEach(bukkitTarget::sendMessage);
+        bukkitPlayer.sendMessage(ChatColor.YELLOW + "Teleport request sent to "  + bukkitTarget.getName());
+        return true;
     }
 }

@@ -1,8 +1,7 @@
 package me.theminecoder.mcsurvival.managers;
 
+import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import me.theminecoder.mcsurvival.objects.SurvivalPlayer;
 import org.bukkit.entity.Player;
 
@@ -19,15 +18,10 @@ public final class PlayerManager {
 
     private static Map<UUID, SurvivalPlayer> playerMap = new ConcurrentHashMap<>();
 
-    private static LoadingCache<UUID, UUID> teleportCache = CacheBuilder.newBuilder()
+    private static Cache<UUID, UUID> teleportCache = CacheBuilder.newBuilder()
             .expireAfterWrite(120, TimeUnit.SECONDS)
             .maximumSize(500)
-            .build(new CacheLoader<UUID, UUID>() {
-                @Override
-                public UUID load(UUID key) throws Exception {
-                    return null;
-                }
-            });
+            .build();
 
     private PlayerManager(){
     }
@@ -45,7 +39,7 @@ public final class PlayerManager {
     }
 
 
-    public static LoadingCache<UUID, UUID> getTeleportCache() {
+    public static Cache<UUID, UUID> getTeleportCache() {
         return teleportCache;
     }
 }

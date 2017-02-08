@@ -7,8 +7,8 @@ commands:
     description: Request to teleport to another online player with this command!
     usage: /tpa <target>
   tpaccept:
-    description: Accept pending teleport requests with this command!
+    description: Accept pending teleport requests
     usage: /tpaccept
   tpdeny:
-    description: Deny pending teleport requests with this command!
+    description: Deny pending teleport requests
     usage: /tpdeny
